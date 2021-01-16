@@ -1,52 +1,63 @@
 package org.progmatic.messenger.controller;
 
 import org.progmatic.messenger.model.Message;
+import org.progmatic.messenger.model.SearchEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
+import java.util.stream.Collectors;
 
 @Controller
 public class MessageController implements Comparator<Message> {
     ArrayList<Message> messagearray = new ArrayList<>();
+    ArrayList<Message>solutionArray=new ArrayList<>();
 
-    @RequestMapping(path = "/message/form", method = RequestMethod.GET)         //form letrehozaa
-    public String createForm(@ModelAttribute("msg1") Message message){              //a modelbe rakok egy Message objektumot msg1 neven
-        return "Form";
+
+
+    @RequestMapping(path = "/message/form", method = RequestMethod.GET)         //form letrehozaa tortenik itt az url re kattintas utan
+    public String createForm(@ModelAttribute("msg1") Message message){             //a modelbe rakok egy Message objektumot msg1 neven
+        return "Form";                                                             //meghivom a Form lapoot
     }
 
 
-    @RequestMapping(path = "/message/create", method = RequestMethod.POST) //ha valaki kuld egy post requestet az elobbi url re akkor az alatta levo metodus hivodik meg
-    public String createMessage(@ModelAttribute("msg1") Message feltoltottMsg){     //a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
+
+    //az uzenet beadasa oldalon vagyok meg fizikalisan, de a form elkuldesevel ugrok ehhez a metodushoz
+
+    @RequestMapping(path = "/message/create", method = RequestMethod.POST)                      //ha valaki kuld egy post requestet az elobbi url re akkor az alatta levo metodus hivodik meg
+    public String createMessage(@ModelAttribute("msg1") Message feltoltottMsg, Model model){       //a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
         feltoltottMsg.setDate(java.time.LocalDateTime.now().toString());
         messagearray.add(feltoltottMsg);
-        System.out.println("fasza");
-       return "redirect:/message/list";//-masik vegpontra kell redirectelni
-    }
-
-
-    @RequestMapping(value = "/message/list", method = RequestMethod.GET)       //ezt kell meghivni a bongeszobol
-    public String listMessage(Model model) {
-        model.addAttribute("messagearray", messagearray); System.out.println("fasza2");   //ilyen neven ezt teszem bele
-    return "MessageSender";          //ezt a htmlt adja vissza
+        model.addAttribute("messagearray", messagearray);
+        model.addAttribute("majom",new SearchEntity("","","",""));
+        return "MessageSearcherandList";                                                                 //-masik vegpontra kell redirectelni
     }
 
 
 
-    @RequestMapping(value = "/message/filter", method = RequestMethod.GET)       //ezt kell meghivni a bongeszobol
-    public String filterMessage(Model model) {
 
 
 
-        model.addAttribute("messagearray", messagearray); System.out.println("fasza2");   //ilyen neven ezt teszem bele
-        return "MessageSender";          //ezt a htmlt adja vissza
+    //a kepen mar a messagesearcher latszik
+
+    @RequestMapping(path = "/message/search", method = RequestMethod.POST)
+    public String searchMessage(@ModelAttribute("majom") SearchEntity feltoltottSearch, Model model) {
+
+        solutionArray.addAll(messagearray.stream().
+                        filter(x->x.getText().contains(feltoltottSearch.getSearchText())).
+                        filter(y->y.getFrom().contains(feltoltottSearch.getSearchFrom())).
+                        filter(z->z.getDate().contains(feltoltottSearch.getSearchDate())).
+                        filter(s->s.getDate().contains(feltoltottSearch.getSearchDate())).
+                        collect(Collectors.toList()));
+        System.out.println(solutionArray.get(0).getFrom().toString());
+        //return "redirect:/message/solutionList";
+        model.addAttribute("messagearray", solutionArray);
+        return "MessageSearcherandList";
     }
 
 
