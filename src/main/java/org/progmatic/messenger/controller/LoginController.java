@@ -18,7 +18,6 @@ public class LoginController {
 
     @RequestMapping(path = "/sajatlogin", method = RequestMethod.GET)
     public String login() {
-        System.out.println(inMemoryUserDetailsManager.loadUserByUsername("u"));
 
 
         return "/loginhtml";

@@ -23,18 +23,19 @@ import java.util.function.ToLongFunction;
 
 
 @Controller
-@Scope()
+
 public class MessageController implements Comparator<Message> {
 
     MessageService ms;          //konstruktorban van
 
-    @Autowired
-    SessionBean ss;
+
+    private SessionBean ss;
 
 
     @Autowired
-    public MessageController(MessageService ms) {
+    public MessageController(MessageService ms, SessionBean ss) {
         this.ms = ms;
+        this.ss = ss;
     }
 
 
