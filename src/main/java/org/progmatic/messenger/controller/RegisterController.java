@@ -33,8 +33,8 @@ public class RegisterController {
     public String register2 (@ModelAttribute("u2") MyUser user1){
 
         inMemoryUserDetailsManager.createUser(user1);       //  user1 nevu MyUser tipusu objektumot feltolti a weblap alapjan az input mezok ertekeivel. ezeket az u2 neven kapcsolja ossze
-        System.out.println( userName + " Created!");
-        return "/sajatlogin";
+        System.out.println( user1.getUsername() + " Created!");
+        return "redirect:/message/form";
     }
 
     @RequestMapping(path="/register", method = RequestMethod.GET)
