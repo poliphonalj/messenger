@@ -1,15 +1,22 @@
 package org.progmatic.messenger.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 public class Message {
-
+    @NotNull @Size(min=2,max=25)
     public String from;
-    public String date;
+
+    @NotNull @Size(min=1,max=250)
     public String text;
+    public String date;
 
 
-    public Message(String from, String date, String text) {//szoveg, ki , mikor
+
+
+    public Message(String from,String text) {//szoveg, ki , mikor
         this.from = from;
-        this.date = date;
+        this.date = java.time.LocalDateTime.now().toString();
         this.text = text;
     }
 
@@ -35,5 +42,14 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "from='" + from + '\'' +
+                ", text='" + text + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

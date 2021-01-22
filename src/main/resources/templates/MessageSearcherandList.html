@@ -32,12 +32,10 @@
                 <input type="text" th:field="*{searchText}" id="text" class="form-control" placeholder="text">
             </div>
 
-            <div class="col-3 ">
-                <input type="text" th:field="*{searchFrom}" id="from" class="form-control" placeholder="from">
-            </div>
+
 
             <div class="col-3 ">
-                <select name="select" >
+                <select th:field="*{ordBy}" >
                     <option value="from">from</option>
                     <option value="text">text</option>
                     <option value="date">date</option>
@@ -58,20 +56,16 @@
                 <input type="text" th:field="*{searchID}" id="ID" class="form-control" placeholder="ID">
             </div>
             <div class=" col-3 ">
-                <select name="select">
+                <select th:field="*{order}">
                     <option value="ascent">ascent</option>
                     <option value="descent">descent</option>
                 </select>
             </div>
             <div class=" col-3 ">
-                <input type="submit">
+                <input type="submit" value="search">
             </div>
-
         </div>
     </div>
-
-
-
 </form>
 
 
@@ -101,7 +95,7 @@
                     <th>
                         <div class="col-3 gy-5">
                             <form data-th-action="@{/message/form}">
-                                <input type="submit" class="btn btn-success" new message/>
+                                <input type="submit" class="btn btn-success" value="new message" />
                             </form>
                         </div>
                     </th>
@@ -112,7 +106,7 @@
                     <td data-th-text="${message.text}"></td>
 
                     <td>
-                        <button type="button" id="elkuld" class="btn-danger">Töröl</button>
+                        <button type="button" class="btn-danger">remove</button>
                     </td>
                 </tr>
 

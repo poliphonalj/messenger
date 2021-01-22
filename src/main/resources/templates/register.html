@@ -1,0 +1,100 @@
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>registrationr</title>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+
+
+
+
+</head>
+<body>
+
+
+<form  method="POST" th:action="@{/register}" th:object="${u2}">
+    <div>
+        <div class="container container-fluid">
+            <div class="row ">
+                <div class="col-12 col-auto">
+                    <h1 >Register a new user:</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row gy-2 justify-content-center">
+            <div class="col-3 ">
+                <label for="userName" class="col-form-label">Name</label>
+            </div>
+            <div class="col-7 ">
+                <input type="text" th:field="*{userName}"   id="userName" class="form-control" placeholder="name">
+                <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">name Error</td>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row gy-2 justify-content-center">
+            <div class="col-3 ">
+                <label for="password" class="col-form-label">password</label>
+            </div>
+            <div class="col-7 ">
+                <input type="text" th:field="*{password}"   id="userName" class="form-control" placeholder="password">
+                <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="row">
+        <div class="row gy-2 justify-content-center">
+            <div class="col-3 ">
+                <label for="email" class="col-form-label">Email</label>
+            </div>
+            <div class="col-7 ">
+                <input type="text"  th:field="*{email}"     id="email" class="form-control" placeholder="email">
+
+                <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="row gy-2 justify-content-center">
+            <div class="col-3 ">
+                <label for="birth" class="col-form-label">Date of birth</label>
+            </div>
+            <div class="col-7 ">
+                <input type="text"  th:field="*{birth}"     id="birth" class="form-control" placeholder="yyyy-mm-dd">
+
+                <td th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}">birth Error</td>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="row gy-2 justify-content-center">
+            <div class="col-3 ">
+            </div>
+            <div class=" col-7 ">
+                <input type="submit" id="send" class="btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

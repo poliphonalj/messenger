@@ -1,10 +1,12 @@
 package org.progmatic.messenger.model;
 
 public class SearchEntity {
-   public String searchFrom="";
+    public String searchFrom="";
     public String searchText="";
     public String searchDate="";
     public String searchID="";
+    private String order="ascent";
+    private String ordBy="searchText";
 
     public SearchEntity(String searchFrom, String searchText, String searchDate, String searchID) {
         this.searchFrom = searchFrom;
@@ -43,6 +45,22 @@ public class SearchEntity {
 
     public void setSearchDate(String searchDate) {
         this.searchDate = searchDate;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getOrdBy() {
+        return ordBy;
+    }
+
+    public void setOrdBy(String ordBy) {
+        this.ordBy = ordBy;
     }
 
     @Override

@@ -25,22 +25,13 @@
 
 
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
-        <div class="container mx-auto">
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-                    <a class="nav-link" href="form.html">New message</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+
 
 </head>
 <body>
 
 
-<form  method="POST" th:action="@{/message/create}" th:object="${msg1}">
+<form  method="POST" th:action="@{/message/kilistaz}" th:object="${msg1}">
     <div>
         <div class="container container-fluid">
             <div class="row">
@@ -57,7 +48,8 @@
                 <label for="from" class="col-form-label">From</label>
             </div>
             <div class="col-7 ">
-                <input type="text" th:field="*{from}" id="from" class="form-control" placeholder="from">
+                <input type="text" th:field="*{from}"   id="from" class="form-control" placeholder="from">
+                <td th:if="${#fields.hasErrors('from')}" th:errors="*{from}">from Error</td>
             </div>
         </div>
     </div>
@@ -69,7 +61,9 @@
                 <label for="text" class="col-form-label">Message</label>
             </div>
             <div class="col-7 ">
-                <input type="text"  th:field="*{text}" id="text" class="form-control" placeholder="text here">
+                <input type="text"  th:field="*{text}"     id="text" class="form-control" placeholder="text here">
+
+                <td th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text Error</td>
             </div>
         </div>
     </div>
