@@ -31,8 +31,8 @@
                 <label for="userName" class="col-form-label">Name</label>
             </div>
             <div class="col-7 ">
-                <input type="text" th:field="*{userName}"   id="userName" class="form-control" placeholder="name">
-                <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">name Error</td>
+                <input type="text" name="userName"   id="userName" class="form-control" placeholder="name">
+
             </div>
         </div>
     </div>
@@ -43,8 +43,8 @@
                 <label for="password" class="col-form-label">password</label>
             </div>
             <div class="col-7 ">
-                <input type="text" th:field="*{password}"   id="userName" class="form-control" placeholder="password">
-                <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
+                <input type="text" name="password"   id="password" class="form-control" placeholder="password">
+
             </div>
         </div>
     </div>
