@@ -1,9 +1,7 @@
 package org.progmatic.messenger.configurator;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -11,19 +9,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.web.filter.CharacterEncodingFilter;
+
 
 @EnableWebSecurity
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
-
     @Bean
-
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("user").
+        manager.createUser(User.withUsername("admin").
                 password("p").roles("ADMIN").build());
-
         return manager;
     }
 
@@ -47,7 +42,5 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/register", "/").permitAll()    //mindenki johet ide=aki nem jelentkezett be az csak ezt az ablakot latja
                 .anyRequest().authenticated();
-
-
     }
 }

@@ -27,10 +27,7 @@ import java.util.function.ToLongFunction;
 public class MessageController implements Comparator<Message> {
 
     MessageService ms;          //konstruktorban van
-
-
     private SessionBean ss;
-
 
     @Autowired
     public MessageController(MessageService ms, SessionBean ss) {
@@ -44,10 +41,6 @@ public class MessageController implements Comparator<Message> {
     //form letrehozaa tortenik itt az url re kattintas utan
 
     public String createForm(@ModelAttribute("msg1") Message message ) {             //a formot tartalmazo html feltetelezi hogy van a modelben mar egy msg1
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-
-//a diabol
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         message.setFrom(user.getUsername());
         return "Form";
@@ -55,11 +48,9 @@ public class MessageController implements Comparator<Message> {
 
     @RequestMapping(path = "/message/form", method = RequestMethod.POST)
     public String createForm2(@ModelAttribute("msg1") Message message ) {             //a formot tartalmazo html feltetelezi hogy van a modelben mar egy msg1
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        System.out.println("bejelentkezve:v" + currentPrincipalName);//ez mar tarolja a usert
-        System.out.println("createform2");
-        message.setFrom(currentPrincipalName);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentPrincipalName = authentication.getName();
+            message.setFrom(currentPrincipalName);
         return "Form";
     }
 

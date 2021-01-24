@@ -1,11 +1,8 @@
-
-
-package org.progmatic.messenger.service;
+package org.progmatic.messenger.model;
 
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +19,6 @@ public class MyUser implements UserDetails {
     public MyUser(String userName, String password) {
         this.userName=userName;
         this.password=password;
-
     }
 
     public String getCreationDate() {
@@ -70,8 +66,6 @@ public class MyUser implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
     public String getBirth() {
         return birth;

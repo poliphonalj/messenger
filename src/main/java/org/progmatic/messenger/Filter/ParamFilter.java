@@ -3,12 +3,11 @@ package org.progmatic.messenger.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Component
 public class ParamFilter implements Filter {
@@ -35,15 +34,6 @@ public class ParamFilter implements Filter {
                 System.out.println(actualEntry.getKey());
             }
         }
-        System.out.println(servletRequest.getParameter("blah"));
-
-           /*
-            while(servletRequest.getAttributeNames().hasMoreElements()) {
-                String name=servletRequest.getAttributeNames().nextElement();
-                String value= servletRequest.getParameter(name);
-                log.info("Param info: "+name+" "+value);
-            }*/
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
