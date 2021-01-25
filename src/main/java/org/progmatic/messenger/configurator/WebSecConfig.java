@@ -34,13 +34,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .formLogin()
-                .loginProcessingUrl("/sajatlogin")
+                .loginProcessingUrl("/sajatlogin").permitAll()
                 .loginPage("/sajatlogin").permitAll()
                 .usernameParameter("userName")
                 .passwordParameter("password")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register", "/").permitAll()    //mindenki johet ide=aki nem jelentkezett be az csak ezt az ablakot latja
+                .antMatchers("/register").permitAll()    //mindenki johet ide=aki nem jelentkezett be az csak ezt az ablakot latja
+                .antMatchers("/error").permitAll()
                 .anyRequest().authenticated();
     }
 }

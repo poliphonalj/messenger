@@ -16,8 +16,12 @@ public class LoginController {
 
     @RequestMapping(path = "/sajatlogin", method = RequestMethod.GET)
     public String login() {
-        return "/loginhtml";
+        return "loginhtml";
     }
+
+
+
+
 }
 
 
