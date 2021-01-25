@@ -11,7 +11,7 @@ public class MyControllerAdvice {
 
         @ExceptionHandler(Exception.class)
         public String handleErrors(Exception ex, Model model){
-        model.addAttribute("exceptionMessage", ex.getMessage());
+        model.addAttribute("exceptionMessage", ex.getMessage()+" -------"+ex.getCause());
         return "error";
     }
 }

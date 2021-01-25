@@ -1,12 +1,16 @@
 package org.progmatic.messenger.service;
 
 import org.progmatic.messenger.model.Message;
+
 import org.progmatic.messenger.model.SearchEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -16,6 +20,19 @@ import java.util.stream.Collectors;
 
 
 public class MessageService {
+
+
+
+
+
+
+
+
+
+
+
+
+
     ArrayList<Message> messagearray = new ArrayList<>();
 
     public void sendArray(Message se) {

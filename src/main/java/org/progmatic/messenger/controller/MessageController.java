@@ -1,6 +1,7 @@
 package org.progmatic.messenger.controller;
 
 import org.progmatic.messenger.model.Message;
+
 import org.progmatic.messenger.model.SearchEntity;
 import org.progmatic.messenger.service.MessageService;
 import org.progmatic.messenger.service.SessionBean;
@@ -10,10 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.function.Function;
@@ -25,6 +29,9 @@ import java.util.function.ToLongFunction;
 @Controller
 
 public class MessageController implements Comparator<Message> {
+
+    @PersistenceContext
+    EntityManager em;
 
     MessageService ms;          //konstruktorban van
     private SessionBean ss;
@@ -50,17 +57,18 @@ public class MessageController implements Comparator<Message> {
     public String createForm2(@ModelAttribute("msg1") Message message ) {             //a formot tartalmazo html feltetelezi hogy van a modelben mar egy msg1
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
+
             message.setFrom(currentPrincipalName);
         return "Form";
     }
 
 
     //az uzenet beadasa oldalon vagyok meg fizikalisan, de a form elkuldesevel ugrok ehhez a metodushoz
-
+@Transactional
     @RequestMapping(path = "/message/kilistaz", method = RequestMethod.POST)
     //ha valaki kuld egy post requestet az elobbi url re akkor az alatta levo metodus hivodik meg
     public String listMessage(@Valid @ModelAttribute("msg1") Message feltoltottMsg, BindingResult br, Model model) {       //@valid hivja meg az ellenorzest, ha hiba van le sem fut a metodus      a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
-
+        //
         if (br.hasErrors()) {
             return "Form";
 
@@ -69,6 +77,13 @@ public class MessageController implements Comparator<Message> {
 
           //  System.out.println("session scope " + ss.getSender() + " - az osszes kuldo " + ss.getCounter() + " az elso kuldo hanyszor kuldott meg - " + ss.getFirstSendersNum());
 
+
+
+
+           /////itt teszi  be a db be
+
+
+            createMessageDB(feltoltottMsg);
             ms.sendArray(feltoltottMsg);
             //model.addAttribute("firstSender",ss.getFirstSender());
             model.addAttribute("firstSender", "family guy");
@@ -80,13 +95,36 @@ public class MessageController implements Comparator<Message> {
             return "MessageSearcherandList";//-masik vegpontra kell redirectelni
         }
     }
+    //itt kell betenni a db be is
 
+
+   @Transactional
+    public void createMessageDB(Message ms){
+       System.out.println(ms);
+        em.persist(ms);
+
+    }
 
     //a kepen mar a messagesearcher latszik
 
     @RequestMapping(path = "/message/search", method = RequestMethod.POST)
     public String searchMessage(@ModelAttribute("majom") SearchEntity feltoltottSearch, Model model) {
         System.out.println("searchmessage");
+
+
+
+        //a search miatt itt kiirja a user adatait
+        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+
+
+
+        System.out.println(user.toString());
+
+
+
+
 
         ArrayList<Message> solutionArray = new ArrayList<>();
         solutionArray = ms.filtArray(feltoltottSearch);
