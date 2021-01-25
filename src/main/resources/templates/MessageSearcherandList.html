@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Üzenetek listázása</title>
@@ -11,10 +11,27 @@
         <div class="container mx-auto">
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link" href="Form.html">New message</a>
-                    <a class="nav-link active" aria-current="page" href="userList.html">Users list</a>
+                    <a class="nav-link" href="addMessage.html">New message</a>
+
+                    <!--csak admin rolnak jelenik meg-->
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="navbar-form navbar-right">
+                            <a class="nav-link" aria-current="page" data-th-href="@{/message/userList}">Users list</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div sec:authorize="isAuthenticated()">
+                    <div class="navbar-form navbar-right">
+                            <a class="nav-link" aria-current="page" href="userList.html">Logout</a>
+                        </a>
+                    </div>
+                </div>
 
                 </div>
+
+
             </div>
         </div>
     </nav>
@@ -108,7 +125,7 @@
                     <th>Text</th>
                     <th>
                         <div class="col-3 gy-5">
-                            <form data-th-action="@{/message/form}">
+                            <form data-th-action="@{/message/addMessage}">
                                 <input type="submit" class="btn btn-success" value="new message" />
                             </form>
                         </div>
@@ -119,9 +136,18 @@
                     <td data-th-text="${message.date}"></td>
                     <td data-th-text="${message.text}"></td>
 
-                    <td>
-                        <button type="button" class="btn-danger">remove</button>
-                    </td>
+
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="navbar-form navbar-right">
+                            <td>
+                                <button type="button" class="btn-danger">remove</button>
+                            </td>
+                        </div>
+                    </div>
+
+
+
+
                 </tr>
 
             </table>

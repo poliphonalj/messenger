@@ -21,7 +21,7 @@ public class Message {
 
     public Message(Long ID,String from,String text) {//szoveg, ki , mikor
         this.from = from;
-        this.date = java.time.LocalDateTime.now().toString();
+       // this.date = java.time.LocalDateTime.now().toString();
         this.text = text;
         this.ID=ID;
     }

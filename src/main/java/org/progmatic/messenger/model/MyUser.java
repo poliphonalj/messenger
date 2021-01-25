@@ -2,9 +2,11 @@ package org.progmatic.messenger.model;
 
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class MyUser implements UserDetails {
     String userName ="";
@@ -14,12 +16,15 @@ public class MyUser implements UserDetails {
     String password="";
     String creationDate="";
     String roles="";
-
+    String ROLE_PREFIX = "ROLE_";
 
     public MyUser(String userName, String password) {
         this.userName=userName;
         this.password=password;
     }
+
+
+
 
     public String getCreationDate() {
         return creationDate;
@@ -31,7 +36,9 @@ public class MyUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        list.add(new SimpleGrantedAuthority(ROLE_PREFIX + "user"));
+        return list;
     }
 
     public String getPassword() {

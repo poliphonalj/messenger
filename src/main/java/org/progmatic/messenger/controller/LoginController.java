@@ -1,3 +1,8 @@
+/* admineknek megjelenik a user list menu es a torles gomb, usereknek nem*/
+
+
+
+
 package org.progmatic.messenger.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +23,6 @@ public class LoginController {
     public String login() {
         return "loginhtml";
     }
-
-
-
-
 }
 
 
