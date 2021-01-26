@@ -5,7 +5,6 @@
     <input type="text" data-th-field="*{from}"/>
     <input type="text" data-th-field="*{date}"/>
     <input type="text" data-th-field="*{text}"/>
-
     <input type="submit" value="Submit"/>
 </form>
 </body>
@@ -77,6 +76,18 @@
         </div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="row">
         <div class="row gy-2 justify-content-center">
             <div class="col-3 ">
@@ -86,7 +97,27 @@
             </div>
         </div>
     </div>
+
 </form>
+
+    <select >
+        <option th:each="topic : ${topicarray}"
+                th:value="${topic}"
+                th:text="${topic}">topics</option>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>

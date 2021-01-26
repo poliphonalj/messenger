@@ -22,17 +22,6 @@ import java.util.stream.Collectors;
 public class MessageService {
 
 
-
-
-
-
-
-
-
-
-
-
-
     ArrayList<Message> messagearray = new ArrayList<>();
 
     public void sendArray(Message se) {

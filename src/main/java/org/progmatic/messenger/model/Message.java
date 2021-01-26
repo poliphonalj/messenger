@@ -1,9 +1,6 @@
 package org.progmatic.messenger.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 @Entity
@@ -18,6 +15,12 @@ public class Message {
     @Id
     @GeneratedValue
     public long ID;
+    @ManyToOne
+    private Topic topic;        //toppic mapby -a
+
+
+
+
 
     public Message(Long ID,String from,String text) {//szoveg, ki , mikor
         this.from = from;
@@ -65,6 +68,14 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     @Override
