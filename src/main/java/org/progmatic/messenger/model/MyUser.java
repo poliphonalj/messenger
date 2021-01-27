@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class MyUser implements UserDetails {
+public class MyUser implements UserDetails {            //entitassa tenni
     String userName ="";
     String birth="";
     String email="";
@@ -21,6 +21,8 @@ public class MyUser implements UserDetails {
     public MyUser(String userName, String password) {
         this.userName=userName;
         this.password=password;
+
+
     }
 
 

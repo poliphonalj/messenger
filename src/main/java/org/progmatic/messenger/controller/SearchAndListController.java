@@ -44,7 +44,7 @@ public class SearchAndListController implements Comparator<Message> {
     public SearchAndListController(MessageService ms, SessionBean ss, TopicService topicService) {
         this.ms = ms;
         this.ss = ss;
-        this.topicService=topicService;
+        this.topicService = topicService;
         t = new Topic();
         u = new Topic();
         s = new Topic();
@@ -59,27 +59,31 @@ public class SearchAndListController implements Comparator<Message> {
     public String listMessage(@Valid @ModelAttribute("msg1") Message feltoltottMsg, BindingResult br, Model model,
                               @ModelAttribute("topic.ID") int seged) { //rakja abe a modelbe egy uj msg1 neven          a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
         if (br.hasErrors()) {
-            System.out.println("brerror");
+
             return "addMessage";
         } else {
-            Topic topik=topicService.findTopicById(seged);
+
+            Topic topik = topicService.findTopicById(seged);
             ss.setSender(feltoltottMsg.getFrom());
             feltoltottMsg.setTopic(topik);
             topik.getMessagesList().add(feltoltottMsg);
             em.persist(feltoltottMsg);
             em.merge(topik);
 
+            String topicname = feltoltottMsg.getTopic().getName();        //a topic nevenek kikerese
 
-//itt teszi  be a db be
+
+            //itt teszi  be a db be
             feltoltottMsg.setDate(LocalDateTime.now().toString());
             createMessageDB(feltoltottMsg);
-            createTopic();//honnan kap Topicot
+            //createTopic();
             List<Message> resultList;
             resultList = findAllDB();
             ms.sendArray(feltoltottMsg);
             model.addAttribute("messagearray", resultList);
             model.addAttribute("majom", new SearchEntity("", "", "", ""));
-            return "MessageSearcherandList";//-masik vegpontra kell redirectelni
+            model.addAttribute("topicname", topicname);
+            return "MessageSearcherandList";
         }
     }
 
@@ -90,7 +94,7 @@ public class SearchAndListController implements Comparator<Message> {
 
     @Transactional
     public void createTopic() {
-
+        System.out.println("topic is created");
         em.persist(t);
         t.setName("sport");
         em.persist(u);
@@ -101,7 +105,6 @@ public class SearchAndListController implements Comparator<Message> {
         z.setName("mozi");
 
     }
-
 
     @Transactional
     public List<Message> findAllDB() {
