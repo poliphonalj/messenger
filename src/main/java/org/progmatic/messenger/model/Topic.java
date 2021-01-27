@@ -32,7 +32,13 @@ public class Topic {
     }
 
 
+    public List<Message> getMessagesList() {
+        return messagesList;
+    }
 
+    public void setMessagesList(List<Message> messagesList) {
+        this.messagesList = messagesList;
+    }
 
     public int getID() {
         return ID;

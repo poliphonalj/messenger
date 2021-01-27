@@ -23,7 +23,6 @@ public class ParamFilter implements Filter {
             throws IOException, ServletException {
         servletRequest.setCharacterEncoding("UTF-8");
         servletResponse.setContentType("text/html; charset=UTF-8");
-        System.out.println("blaf");
         log = LoggerFactory.getLogger(ParamFilter.class);
 
 
@@ -31,7 +30,7 @@ public class ParamFilter implements Filter {
             if (actualEntry.getValue() instanceof String[]) {
                 System.out.println("params: " + actualEntry.getKey() + " " + Arrays.toString((String[]) actualEntry.getValue()));
             } else {
-                System.out.println(actualEntry.getKey());
+
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);
@@ -40,7 +39,6 @@ public class ParamFilter implements Filter {
     @Override
     public void destroy() {
     }
-
 }
 
 

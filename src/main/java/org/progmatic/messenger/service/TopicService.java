@@ -9,15 +9,14 @@ import java.util.List;
 
 @Service
 public class TopicService {//kiszedi a topiklistat  a dbbol es aztan ezt be kell autowirelezni a messagesender24 hez
-
     @PersistenceContext
     EntityManager em;
 
     public List<Topic> getTopicList(){
-       // System.out.println("topicok listaja    "+ em.createQuery("SELECT t.name FROM Topic t").getResultList());
-       return em.createQuery("SELECT t.name FROM Topic t").getResultList();
+       return em.createQuery("SELECT t FROM Topic t").getResultList();
     }
 
-
-
+    public Topic findTopicById(int i){
+       return em.find(Topic.class,i);
+    }
 }

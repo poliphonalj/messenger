@@ -77,17 +77,6 @@
     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
     <div class="row">
         <div class="row gy-2 justify-content-center">
             <div class="col-3 ">
@@ -98,13 +87,18 @@
         </div>
     </div>
 
+
+    <select th:field="*{topic.ID}">
+        <option th:each="topicactual : ${topicarray}"
+                th:value="${topicactual.ID}"
+                th:text="${topicactual.name}">
+        </option>
+    </select>
+
+
 </form>
 
-    <select >
-        <option th:each="topic : ${topicarray}"
-                th:value="${topic}"
-                th:text="${topic}">topics</option>
-    </select>
+
 
 
 

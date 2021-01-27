@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
-//scope
-
-
 public class MessageService {
 
 

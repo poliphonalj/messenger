@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
@@ -37,74 +38,59 @@ public class SearchAndListController implements Comparator<Message> {
     Topic z;
     MessageService ms;
     private SessionBean ss;
-
-
+    private TopicService topicService;
 
     @Autowired
-    public SearchAndListController(MessageService ms, SessionBean ss) {
+    public SearchAndListController(MessageService ms, SessionBean ss, TopicService topicService) {
         this.ms = ms;
         this.ss = ss;
-        t=new Topic();
-        u=new Topic();
-        s=new Topic();
-        z=new Topic();
+        this.topicService=topicService;
+        t = new Topic();
+        u = new Topic();
+        s = new Topic();
+        z = new Topic();
     }
-
 
 
     //az uzenet beadasa oldalon vagyok meg fizikalisan, de a form elkuldesevel ugrok ehhez a metodushoz
     @Transactional
     @RequestMapping(path = "/message/kilistaz", method = RequestMethod.POST)
 
-    public String listMessage(@Valid @ModelAttribute("msg1") Message feltoltottMsg, BindingResult br, Model model) {       //@valid hivja meg az ellenorzest, ha hiba van le sem fut a metodus      a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
+    public String listMessage(@Valid @ModelAttribute("msg1") Message feltoltottMsg, BindingResult br, Model model,
+                              @ModelAttribute("topic.ID") int seged) { //rakja abe a modelbe egy uj msg1 neven          a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
         if (br.hasErrors()) {
+            System.out.println("brerror");
             return "addMessage";
         } else {
+            Topic topik=topicService.findTopicById(seged);
             ss.setSender(feltoltottMsg.getFrom());
+            feltoltottMsg.setTopic(topik);
+            topik.getMessagesList().add(feltoltottMsg);
+            em.persist(feltoltottMsg);
+            em.merge(topik);
+
 
 //itt teszi  be a db be
-
             feltoltottMsg.setDate(LocalDateTime.now().toString());
-
             createMessageDB(feltoltottMsg);
-            System.out.println("ceatetopic mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
             createTopic();//honnan kap Topicot
-
-
-
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            List<Message>resultList;
-
-            resultList= findAllDB();
-
-
-
-
-
-
-
-
+            List<Message> resultList;
+            resultList = findAllDB();
             ms.sendArray(feltoltottMsg);
-            //model.addAttribute("firstSender",ss.getFirstSender());
-           // model.addAttribute("firstSender", "family guy");
-           // model.addAttribute("messagearray", ms.getArray());//////////////////////////
             model.addAttribute("messagearray", resultList);
-
-
             model.addAttribute("majom", new SearchEntity("", "", "", ""));
             return "MessageSearcherandList";//-masik vegpontra kell redirectelni
         }
     }
 
     @Transactional
-    public void createMessageDB(Message ms){
-       System.out.println(ms);
+    public void createMessageDB(Message ms) {
         em.persist(ms);
     }
 
     @Transactional
-    public void createTopic(){
-        System.out.println("create topic:lllllllllllllllllllllllllllllllllllllll"+t.toString());
+    public void createTopic() {
+
         em.persist(t);
         t.setName("sport");
         em.persist(u);
@@ -114,34 +100,25 @@ public class SearchAndListController implements Comparator<Message> {
         em.persist(z);
         z.setName("mozi");
 
-
-
     }
 
 
     @Transactional
-    public List<Message> findAllDB(){
-        return em.createQuery( "SELECT m FROM Message m").getResultList();
+    public List<Message> findAllDB() {
+        return em.createQuery("SELECT m FROM Message m").getResultList();
     }
 
     //a kepen mar a messagesearcher latszik
 
 
-
     @RequestMapping(path = "/message/search", method = RequestMethod.POST)
     public String searchMessage(@ModelAttribute("majom") SearchEntity feltoltottSearch, Model model) {
-        System.out.println("searchmessage");
 
         //a search miatt itt kiirja a user adatait
-        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ArrayList<Message> solutionArray = new ArrayList<>();
         solutionArray = ms.filtArray(feltoltottSearch);
         solutionArray = ms.orderArray(solutionArray, feltoltottSearch.getOrder(), feltoltottSearch.getOrdBy());
-
-
-
-
-
 
         model.addAttribute("messagearray", solutionArray);
         return "MessageSearcherandList";
