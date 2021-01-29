@@ -8,6 +8,7 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
+    <title>messagesByUser</title>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" >
         <div class="container mx-auto">
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -31,66 +32,33 @@
 
 
 
+
+
 </head>
 <body>
 
 
-<form  method="POST" th:action="@{/message/kilistaz}" th:object="${msg1}">
-    <div>
-        <div class="container container-fluid">
-            <div class="row">
-                <div class="col-1 col-auto">
-                    <h1>Post new messages:</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="row gy-2 justify-content-center">
-            <div class="col-3 ">
-                <label for="from" class="col-form-label">From</label>
-            </div>
-            <div class="col-7 ">
-                <input type="text" th:field="*{from}"   id="from" class="form-control" placeholder="from">
-                <td th:if="${#fields.hasErrors('from')}" th:errors="*{from}">from Error</td>
-            </div>
-        </div>
-    </div>
+<form  method="POST" th:action="@{/message/msgByUsrToList}" th:object="${msgbyusr}">
 
 
     <div class="row">
         <div class="row gy-2 justify-content-center">
-            <div class="col-3 ">
-                <label for="text" class="col-form-label">Message</label>
-            </div>
-            <div class="col-7 ">
-                <input type="text"  th:field="*{text}"     id="text" class="form-control" placeholder="text here">
+            <div class="col-4 ">
 
-                <td th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text Error</td>
+                <select th:field="*{userId}">
+                    <option th:each="actualUser : ${userslist}"
+                            th:value="${actualUser.getUserId}"
+                            th:text="${actualUser.getUserName}">
+                    </option>
+                </select>
             </div>
-        </div>
-    </div>
 
-
-    <div class="row">
-        <div class="row gy-2 justify-content-center">
-            <div class="col-3 ">
-            </div>
             <div class=" col-7 ">
                 <input type="submit" id="elkuld" class="btn-primary">
             </div>
         </div>
     </div>
 
-
-    <select th:field="*{topic.ID}">
-        <option th:each="topicactual : ${topicarray}"
-                th:value="${topicactual.ID}"
-                th:text="${topicactual.name}">
-        </option>
-    </select>
 </form>
-
 </body>
 </html>

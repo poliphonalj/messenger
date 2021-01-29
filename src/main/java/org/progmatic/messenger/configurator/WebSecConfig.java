@@ -1,5 +1,6 @@
 package org.progmatic.messenger.configurator;
 
+import org.progmatic.messenger.service.MyUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,13 +15,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("admin").
+    //@Bean
+   // public UserDetailsService userDetailsService() {
+/*        manager.createUser(User.withUsername("admin").
                 password("p").roles("ADMIN").build());
-        return manager;
-    }
+        return manager;*/
+        //return new MyUserDetailService();
+   //}
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,6 +42,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/register").permitAll()    //mindenki johet ide=aki nem jelentkezett be az csak ezt az ablakot latja
                 .antMatchers("/error").permitAll()
+                .antMatchers("/messagesByUser").permitAll()
                 .anyRequest().authenticated();
     }
 }

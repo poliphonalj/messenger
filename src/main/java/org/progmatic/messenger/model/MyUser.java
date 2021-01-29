@@ -4,42 +4,45 @@ package org.progmatic.messenger.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@Entity
 public class MyUser implements UserDetails {            //entitassa tenni
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @GeneratedValue
+    @Id
+    int userId;
     String userName ="";
     String birth="";
     String email="";
-    String regDate;
     String password="";
-    String creationDate="";
     String roles="";
     String ROLE_PREFIX = "ROLE_";
 
-    public MyUser(String userName, String password) {
-        this.userName=userName;
-        this.password=password;
-
-
+    public MyUser( String userName, String birth, String email, String password) {
+        this.userId = userId;
+        this.userName = userName;
+        this.birth = birth;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
     }
 
+    public MyUser(){}
 
-
-
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-        list.add(new SimpleGrantedAuthority(ROLE_PREFIX + "user"));
+        list.add(new SimpleGrantedAuthority(ROLE_PREFIX + "ADMIN"));
         return list;
     }
 
@@ -92,11 +95,32 @@ public class MyUser implements UserDetails {            //entitassa tenni
         this.email = email;
     }
 
-    public String getRegDate() {
-        return regDate;
+
+    public int getUserId() {
+        return userId;
     }
 
-    public void setRegDate(String regDate) {
-        this.regDate = regDate;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getROLE_PREFIX() {
+        return ROLE_PREFIX;
+    }
+
+    public void setROLE_PREFIX(String ROLE_PREFIX) {
+        this.ROLE_PREFIX = ROLE_PREFIX;
     }
 }
