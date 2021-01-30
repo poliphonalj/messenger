@@ -3,12 +3,15 @@ package org.progmatic.messenger.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+
 @Entity
 public class Message {
     @NotNull @Size(min=2,max=25)
     @Column(name="sender")
     public String from;
-
+    ArrayList<Message>comments;
+    int commented;
     @NotNull @Size(min=1,max=250)
     public String text;
     public String date;
@@ -16,9 +19,19 @@ public class Message {
     @GeneratedValue
     public long ID;
     @ManyToOne
-    private Topic topic;        //toppic mapby -a
+    private Topic topic;//toppic mapby -a
 
 
+    public MyUser getUser() {
+        return user;
+    }
+
+    public void setUser(MyUser user) {
+        this.user = user;
+    }
+
+    @ManyToOne
+    private MyUser user;
 
 
 
@@ -27,6 +40,9 @@ public class Message {
        // this.date = java.time.LocalDateTime.now().toString();
         this.text = text;
         this.ID=ID;
+        comments=null;
+        commented=0;
+
     }
 
     public Message(@NotNull @Size(min = 2, max = 25) String from, @NotNull @Size(min = 1, max = 250) String text, String date) {
@@ -36,6 +52,22 @@ public class Message {
     }
 
     public Message() {
+    }
+
+    public ArrayList<Message> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Message> comments) {
+        this.comments = comments;
+    }
+
+    public int getCommented() {
+        return commented;
+    }
+
+    public void setCommented(int commented) {
+        this.commented = commented;
     }
 
     public long getID() {

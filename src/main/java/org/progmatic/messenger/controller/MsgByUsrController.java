@@ -2,6 +2,8 @@ package org.progmatic.messenger.controller;
 
 import org.progmatic.messenger.model.Message;
 import org.progmatic.messenger.model.MyUser;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -24,18 +26,26 @@ public class MsgByUsrController {
 
         List<MyUser> users= em.createQuery("SELECT my FROM MyUser my").getResultList();
 
-        System.out.println(users.size());
-        System.out.println();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        model.addAttribute("loggedName", currentPrincipalName);
+
         model.addAttribute("userslist",users);
         return "messagesByUser";
     }
 
-    @Transactional
+    @Transactional  //itt valasztja ki a userekhez tartozo uzeneteket, es beteszi oket egy
     @RequestMapping(path = "/message/msgByUsrToList", method = RequestMethod.POST)
     public String msgByUsr2(@ModelAttribute("msgbyusr")  MyUser user,Model model) {
-
+       List<Message>messages= em.createQuery("SELECT m From Message m WHERE m.user.userId=:s").setParameter("s",user.getUserId()).getResultList();
 
         System.out.println("kiscica"+user.getUserId());
+        for (Message message : messages) {
+            System.out.println(message.getText());
+            System.out.println("nagycica"+user.getUserId());
+        }
+        System.out.println();
+        model.addAttribute("messages",messages);
         return "messagesByUser";
     }
 

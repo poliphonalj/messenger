@@ -1,12 +1,14 @@
 package org.progmatic.messenger.controller;
 
 import org.progmatic.messenger.model.Message;
+import org.progmatic.messenger.model.MyUser;
 import org.progmatic.messenger.model.SearchEntity;
 import org.progmatic.messenger.model.Topic;
 import org.progmatic.messenger.service.MessageService;
 import org.progmatic.messenger.service.SessionBean;
 import org.progmatic.messenger.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,7 @@ public class SearchAndListController implements Comparator<Message> {
     MessageService ms;
     private SessionBean ss;
     private TopicService topicService;
+    MyUser user;
 
     @Autowired
     public SearchAndListController(MessageService ms, SessionBean ss, TopicService topicService) {
@@ -50,6 +53,23 @@ public class SearchAndListController implements Comparator<Message> {
         s = new Topic();
         z = new Topic();
     }
+
+
+
+    @RequestMapping(path = "/message/kilistaz", method = RequestMethod.GET)
+    public String listMessage( Model model) {
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        model.addAttribute("loggedName", currentPrincipalName);
+        return  "MessageSearcherandList";
+    }
+
+
+
+
+
 
 
     //az uzenet beadasa oldalon vagyok meg fizikalisan, de a form elkuldesevel ugrok ehhez a metodushoz
@@ -67,6 +87,8 @@ public class SearchAndListController implements Comparator<Message> {
             ss.setSender(feltoltottMsg.getFrom());
             feltoltottMsg.setTopic(topik);
             topik.getMessagesList().add(feltoltottMsg);
+            MyUser my = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();// a sec....a springtol kerem ki mert a sec tudja ki van bejelentkezve. ezt kasztolni kell meg
+            feltoltottMsg.setUser(my);
             em.persist(feltoltottMsg);
             em.merge(topik);
 

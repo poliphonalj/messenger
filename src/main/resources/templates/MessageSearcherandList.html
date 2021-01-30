@@ -7,13 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light" >
         <div class="container mx-auto">
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="MessageSearcherandList.html">Search message</a>
-                    <a class="nav-link" href="form.html">New message</a>
+                    <a class="nav-link" href="addMessage.html">New message</a>
 
                     <!--csak admin rolnak jelenik meg-->
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
@@ -22,12 +21,17 @@
                         </div>
                     </div>
 
-                    <a class="nav-link" href="messagesByUser.html">Messages by user</a>
-                    <a class="nav-link" href="loginhtml.html">Logout</a>
+                    <a class="nav-link" aria-current="page" data-th-href="@{/message/msgByUsr}">Messages by user</a>
+
                 </div>
             </div>
         </div>
+        hello,  <div data-th-text="  ${loggedName}"></div>
+        <a class="nav-link" aria-current="page" data-th-href="@{/message/addMessage}">Logout</a>
     </nav>
+
+
+
 
 
 

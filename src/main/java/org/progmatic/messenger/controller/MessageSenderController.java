@@ -28,6 +28,9 @@ TopicService ts;
         model.addAttribute("topicarray",topics);
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         message.setFrom(user.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        model.addAttribute("loggedName", currentPrincipalName);
         return "addMessage";
     }
     @Transactional
@@ -36,6 +39,8 @@ TopicService ts;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         message.setFrom(currentPrincipalName);
+
+        System.out.println("bejelentkezve"+currentPrincipalName);
         return "addMessage";
     }
 }

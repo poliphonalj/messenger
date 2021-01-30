@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +27,8 @@ public class MyUser implements UserDetails {            //entitassa tenni
     String password="";
     String roles="";
     String ROLE_PREFIX = "ROLE_";
+    @OneToMany(mappedBy="user")
+    private List<Message> messagesList;
 
     public MyUser( String userName, String birth, String email, String password) {
         this.userId = userId;
@@ -41,7 +44,7 @@ public class MyUser implements UserDetails {            //entitassa tenni
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> list = new ArrayList<>();
         list.add(new SimpleGrantedAuthority(ROLE_PREFIX + "ADMIN"));
         return list;
     }
