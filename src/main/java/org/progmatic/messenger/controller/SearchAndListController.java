@@ -80,7 +80,7 @@ public class SearchAndListController implements Comparator<Message> {
                               @ModelAttribute("topic.ID") int seged) { //rakja abe a modelbe egy uj msg1 neven          a feltoltottMsg mar tartalmazza a formbol jovo adatokat is, ezt csak fel kell dolgozni
         if (br.hasErrors()) {
 
-            return "addMessage";
+            return "/addMessage";
         } else {
 
             Topic topik = topicService.findTopicById(seged);
@@ -101,6 +101,9 @@ public class SearchAndListController implements Comparator<Message> {
             //createTopic();
             List<Message> resultList;
             resultList = findAllDB();
+
+
+
             ms.sendArray(feltoltottMsg);
             model.addAttribute("messagearray", resultList);
             model.addAttribute("majom", new SearchEntity("", "", "", ""));

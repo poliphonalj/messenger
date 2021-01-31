@@ -129,11 +129,34 @@
                         </div>
                     </th>
                 </tr>
+
+
                 <tr data-th-each="message: ${messagearray}">
+
+
                     <td data-th-text="${message.from}"></td>
                     <td data-th-text="${message.date}"></td>
                     <td data-th-text="${message.text}"></td>
                     <td data-th-text="${message.getTopic().getName()}"></td>
+                    <td>
+
+                            <form th:action="@{/message/addComment}" th:object="${mes}" method="post">
+                                <input type="hidden" name="from" th:value="${message.from}">
+                                <input type="hidden" name="date" th:value="${message.date}">
+                                <input type="hidden" name="text" th:value="${message.text}">
+                                <button type="submit">Update</button>
+                            </form>
+
+                    </form>
+
+
+
+
+                    </td>
+
+
+
+
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                         <td>
                             <button type="button" class="btn-danger">remove</button>
@@ -145,7 +168,7 @@
 
         </div>
     </div>
-</div>
+
 
 
 </body>
