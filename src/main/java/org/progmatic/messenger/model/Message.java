@@ -10,8 +10,12 @@ public class Message {
     @NotNull @Size(min=2,max=25)
     @Column(name="sender")
     public String from;
+
     ArrayList<Message>comments;
+
     int commented;
+
+
     @NotNull @Size(min=1,max=250)
     public String text;
     public String date;
@@ -20,7 +24,7 @@ public class Message {
     public long ID;
     @ManyToOne
     private Topic topic;//toppic mapby -a
-
+     int sizeOfComments;
 
     public MyUser getUser() {
         return user;
@@ -108,6 +112,11 @@ public class Message {
 
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public int getSizeOfComments(){
+         sizeOfComments=comments.size() ;
+        return comments.size();
     }
 
     @Override
