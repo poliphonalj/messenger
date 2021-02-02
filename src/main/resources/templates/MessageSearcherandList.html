@@ -60,16 +60,11 @@
                 <input type="text" th:field="*{searchText}" id="text" class="form-control" placeholder="text">
             </div>
 
-
-
-            <div class="col-3 ">
-                <select th:field="*{ordBy}" >
-                    <option value="from">from</option>
-                    <option value="text">text</option>
-                    <option value="date">date</option>
-                    <option value="ID">ID</option>
-                </select>
+            <div class="col-3  ">
+                <input type="text" th:field="*{searchFrom}" id="from" class="form-control" placeholder="from">
             </div>
+
+
 
         </div>
     </div>
@@ -83,12 +78,7 @@
             <div class="col-3 ">
                 <input type="text" th:field="*{searchID}" id="ID" class="form-control" placeholder="ID">
             </div>
-            <div class=" col-3 ">
-                <select th:field="*{order}">
-                    <option value="ascent">ascent</option>
-                    <option value="descent">descent</option>
-                </select>
-            </div>
+
             <div class=" col-3 ">
                 <input type="submit" value="search">
             </div>

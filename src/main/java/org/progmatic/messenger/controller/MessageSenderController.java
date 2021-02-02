@@ -43,4 +43,6 @@ TopicService ts;
         System.out.println("bejelentkezve"+currentPrincipalName);
         return "addMessage";
     }
+
+
 }

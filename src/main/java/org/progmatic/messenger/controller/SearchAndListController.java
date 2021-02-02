@@ -101,10 +101,9 @@ public class SearchAndListController implements Comparator<Message> {
             //createTopic();
             List<Message> resultList;
             resultList = findAllDB();
-
-
-
             ms.sendArray(feltoltottMsg);
+
+
             model.addAttribute("messagearray", resultList);
             model.addAttribute("majom", new SearchEntity("", "", "", ""));
             model.addAttribute("topicname", topicname);
@@ -145,9 +144,9 @@ public class SearchAndListController implements Comparator<Message> {
         //a search miatt itt kiirja a user adatait
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ArrayList<Message> solutionArray = new ArrayList<>();
-        solutionArray = ms.filtArray(feltoltottSearch);
-        solutionArray = ms.orderArray(solutionArray, feltoltottSearch.getOrder(), feltoltottSearch.getOrdBy());
-
+        solutionArray = ms.filtArray(feltoltottSearch.searchFrom, feltoltottSearch.searchText, feltoltottSearch.searchDate);
+        //solutionArray = ms.orderArray(solutionArray, feltoltottSearch.getOrder(), feltoltottSearch.getOrdBy());
+        System.out.println(solutionArray);
         model.addAttribute("messagearray", solutionArray);
         return "MessageSearcherandList";
     }

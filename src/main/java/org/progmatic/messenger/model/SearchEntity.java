@@ -1,10 +1,11 @@
 package org.progmatic.messenger.model;
 
 public class SearchEntity {
-    public String searchFrom="";
-    public String searchText="";
-    public String searchDate="";
-    public String searchID="";
+    public String searchFrom;
+    public String searchEmail;
+    public String searchText;
+    public String searchDate;
+    public String searchID;
     private String order="ascent";
     private String ordBy="searchText";
 
@@ -13,6 +14,14 @@ public class SearchEntity {
         this.searchText = searchText;
         this.searchDate = searchDate;
         this.searchID = searchID;
+    }
+
+    public String getSearchEmail() {
+        return searchEmail;
+    }
+
+    public void setSearchEmail(String searchEmail) {
+        this.searchEmail = searchEmail;
     }
 
     public String getSearchID() {

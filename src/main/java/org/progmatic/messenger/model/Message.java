@@ -39,7 +39,7 @@ public class Message {
 
 
 
-    public Message(Long ID,String from,String text) {//szoveg, ki , mikor
+    public Message(String from,String text,long ID) {//szoveg, ki , mikor
         this.from = from;
        // this.date = java.time.LocalDateTime.now().toString();
         this.text = text;

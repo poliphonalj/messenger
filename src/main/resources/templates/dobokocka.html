@@ -5,7 +5,17 @@
 <body>
 <div class="container">
     <h2></h2>
-    <div data-th-text="${dobas}"></div>    <!-- homecontroller 13 sora miatt      itt jon be a thimelife, ertelmezi a htmlt a modelbol kiveszi a message nevu attributumot es beteszi a divbe
+    <div data-th-object="${messages}"></div>
+
+    <tr data-th-each="message: ${messagearray}">
+
+
+        <td data-th-text="${message.from}"></td>
+        <td data-th-text="${message.date}"></td>
+        <td data-th-text="${message.text}"></td>
+    </tr>
+
+    <!-- homecontroller 13 sora miatt      itt jon be a thimelife, ertelmezi a htmlt a modelbol kiveszi a message nevu attributumot es beteszi a divbe
 -->
 
 </div>

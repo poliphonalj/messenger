@@ -1,7 +1,13 @@
 package org.progmatic.messenger.service;
 
+
+import com.mysql.cj.util.StringUtils;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.progmatic.messenger.model.Message;
 
+import org.progmatic.messenger.model.QMessage;
 import org.progmatic.messenger.model.SearchEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,13 +19,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
+
 
 @Service
 public class MessageService {
 
+    @PersistenceContext
+    EntityManager em;
 
     ArrayList<Message> messagearray = new ArrayList<>();
+
 
     public void sendArray(Message se) {
         messagearray.add(se);
@@ -29,14 +40,26 @@ public class MessageService {
         return messagearray;
     }
 
-    public ArrayList<Message> filtArray(SearchEntity searchEntity) {
-        messagearray.addAll(getArray().stream().
-                filter(x -> x.getText().contains(searchEntity.getSearchText())).
-                filter(y -> y.getFrom().contains(searchEntity.getSearchFrom())).
-                filter(z -> z.getDate().contains(searchEntity.getSearchDate())).
-                collect(Collectors.toList()));
-
-        return messagearray;
+    public ArrayList<Message> filtArray(String from, String text, String date) {
+        BooleanBuilder whereCondition = new BooleanBuilder();
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        if (!(StringUtils.isEmptyOrWhitespaceOnly(from))) {
+            whereCondition.and(QMessage.message.from.like("%" + from + "%"));
+        }
+        if (!(StringUtils.isEmptyOrWhitespaceOnly(text))) {
+            whereCondition.and(QMessage.message.text.like("%" + text + "%"));
+        }
+        //if (!(StringUtils.isEmptyOrWhitespaceOnly(ID + ""))) {
+        // whereCondition.and(QMessage.message.ID.eq(Long.valueOf(ID + "")));
+        //}
+        if (!(StringUtils.isEmptyOrWhitespaceOnly(date))) {
+            whereCondition.and(QMessage.message.date.like(date));
+        }
+        List<Message> resultList = (List<Message>) queryFactory.selectFrom(QMessage.message).where(whereCondition).fetch();//ez maga a lekerdezes
+        messagearray.clear();
+        messagearray.addAll(resultList);        //arrayliste valtoztatom
+        System.out.println("mit keresek:  " + from + text + date);
+        return messagearray;//ez megy vissza a kereses eredmenyekent
     }
 
     public ArrayList<Message> orderArray(ArrayList<Message> arrayList, String order, String orderBy) {
@@ -80,7 +103,6 @@ public class MessageService {
 
         return arrayList;
     }
-
 
 
 }
