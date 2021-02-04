@@ -1,6 +1,8 @@
 package org.progmatic.messenger.controller;
 
 import org.progmatic.messenger.model.Message;
+import org.progmatic.messenger.service.HomeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -14,8 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 @Controller //
 public class HomeController {       //a container egy singleton beant csinal ebbol, ehhez routola a http requestet
+    private HomeService hs;
+
+    @Autowired
+    public HomeController(HomeService hs){
+        this.hs=hs;
+    }
+
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     //ha a weberverbe erkezik egy getrequest es a /home v / url re jon, akkor erre a metodusra iranyitsa a requestet, es erre bizza a response eloallitasat
@@ -43,7 +53,7 @@ public class HomeController {       //a container egy singleton beant csinal ebb
 
  */
 
-    @RequestMapping(value = "/dobokocka2", method = RequestMethod.GET)
+    @RequestMapping(value = "/dobokocka2", method = RequestMethod.GET)//olvasas
     public String showUserData(
             @RequestParam("sides") int sides, Model model) {
         Random r = new Random();
@@ -51,26 +61,35 @@ public class HomeController {       //a container egy singleton beant csinal ebb
         model.addAttribute("dobas", i);     //ennyi oldalu dobokockaval dolgozik
         return "dobokocka";
 
-        //localhost:8080=dobokocka2?sides=  xxx         ezt kell meghivni
+        //
     }
 
-    @PersistenceContext
-    EntityManager em;
-    @Transactional
-    @RequestMapping(value = "/modifyMessage", method = RequestMethod.GET)
+
+
+
+
+    @RequestMapping(value = "/appendTextToMsg", method = RequestMethod.GET)//iras
     public String modifyMessage(
-            @RequestParam("id") long id, @RequestParam("text") String text, @RequestParam("sleep") int sleep, Model model) throws InterruptedException {
+            @RequestParam("id") long id, @RequestParam("text") String text,@RequestParam("sleep")int sleep) throws InterruptedException {
         //em.createQuery("update Message m set m.text where m.ID=12").setParameter(); //a setparameter miatt nem lesz mar  sql injection
-        ArrayList<Message> messages=new ArrayList<>();
-        Message m = em.find(Message.class, id);
-        m.setText(text);
-        messages.add(m);
-        Thread.sleep(sleep);
-        model.addAttribute("messagearray", messages);
+        hs.dbAppend(id,"elobb",10);
+        hs.dbAppend2(id,"sheep",10000);
+       // model.addAttribute("messagearray", hs.dbAppend(id,text,sleep));// itt vn a lekerdezes
+        //System.out.println("dffdf"+hs.getmList());
         return "dobokocka";
-
-        //localhost:8080=dobokocka2?sides=  xxx         ezt kell meghivni
     }
+
+
+    @RequestMapping(value = "/showMessage", method = RequestMethod.GET)
+    public String showMessage(
+            @RequestParam("id") long id,  @RequestParam("sleep") int sleep, Model model) throws InterruptedException {
+        //em.createQuery("update Message m set m.text where m.ID=12").setParameter(); //a setparameter miatt nem lesz mar  sql injection
+        hs.setId(id);
+        model.addAttribute("messagearray", hs.showMessage(id,sleep));// itt vn a lekerdezes
+        return "dobokocka";
+    }
+
+
 
 
 }

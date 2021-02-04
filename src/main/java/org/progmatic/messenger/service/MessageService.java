@@ -53,7 +53,7 @@ public class MessageService {
         // whereCondition.and(QMessage.message.ID.eq(Long.valueOf(ID + "")));
         //}
         if (!(StringUtils.isEmptyOrWhitespaceOnly(date))) {
-            whereCondition.and(QMessage.message.date.like(date));
+            whereCondition.and(QMessage.message.date.like("%" + date + "%"));
         }
         List<Message> resultList = (List<Message>) queryFactory.selectFrom(QMessage.message).where(whereCondition).fetch();//ez maga a lekerdezes
         messagearray.clear();

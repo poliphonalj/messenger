@@ -27,7 +27,9 @@
             </div>
         </div>
         hello,  <div data-th-text="  ${loggedName}"></div>
-        <a class="nav-link" aria-current="page" data-th-href="@{/message/addMessage}">Logout</a>
+        <form>
+        <input type="submit" th:action="@{/logout}" value="Logout">
+        </form>
     </nav>
 
 

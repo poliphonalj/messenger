@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
-   // private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
-  /*  @Autowired
-    public LoginController( UserDetailsService inMemoryUserDetailsManager) {
-        this.inMemoryUserDetailsManager = (InMemoryUserDetailsManager) inMemoryUserDetailsManager;
-    }*/
 
     @RequestMapping(path = "/sajatlogin", method = RequestMethod.GET)
     public String login() {

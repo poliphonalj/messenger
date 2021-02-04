@@ -15,13 +15,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
-    //@Bean
-   // public UserDetailsService userDetailsService() {
-/*        manager.createUser(User.withUsername("admin").
-                password("p").roles("ADMIN").build());
-        return manager;*/
-        //return new MyUserDetailService();
-   //}
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,11 +30,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/sajatlogin").permitAll()
                 .loginPage("/sajatlogin").permitAll()
                 .usernameParameter("userName")
-                .passwordParameter("password")
+                .passwordParameter("password").failureForwardUrl("/sajatlogin")
+                .and().
+                logout().logoutSuccessUrl("/sajatlogin").permitAll()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/register").permitAll()    //mindenki johet ide=aki nem jelentkezett be az csak ezt az ablakot latja
                 .antMatchers("/error").permitAll()
+                .antMatchers("/rest/listmessages").permitAll()
                 .antMatchers("/messagesByUser").permitAll()
                 .anyRequest().authenticated();
     }

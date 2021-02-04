@@ -1,5 +1,8 @@
 package org.progmatic.messenger.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,18 +14,31 @@ public class Message {
     @Column(name="sender")
     public String from;
 
-    ArrayList<Message>comments;
+   // ArrayList<Message>comments;
 
     int commented;
+
+   @Version
+    long dbseged;
 
 
     @NotNull @Size(min=1,max=250)
     public String text;
     public String date;
+
+    public long getDbseged() {
+        return dbseged;
+    }
+
+    public void setDbseged(long dbseged) {
+        this.dbseged = dbseged;
+    }
+
     @Id
     @GeneratedValue
     public long ID;
     @ManyToOne
+    @JsonIgnore
     private Topic topic;//toppic mapby -a
      int sizeOfComments;
 
@@ -35,6 +51,7 @@ public class Message {
     }
 
     @ManyToOne
+    @JsonIgnore
     private MyUser user;
 
 
@@ -44,7 +61,7 @@ public class Message {
        // this.date = java.time.LocalDateTime.now().toString();
         this.text = text;
         this.ID=ID;
-        comments=null;
+  //      comments=null;
         commented=0;
 
     }
@@ -58,13 +75,13 @@ public class Message {
     public Message() {
     }
 
-    public ArrayList<Message> getComments() {
-        return comments;
-    }
+  //  public ArrayList<Message> getComments() {
+ //       return comments;
+   // }
 
-    public void setComments(ArrayList<Message> comments) {
-        this.comments = comments;
-    }
+  //  public void setComments(ArrayList<Message> comments) {
+    //    this.comments = comments;
+    //}
 
     public int getCommented() {
         return commented;
@@ -114,10 +131,10 @@ public class Message {
         this.topic = topic;
     }
 
-    public int getSizeOfComments(){
-         sizeOfComments=comments.size() ;
-        return comments.size();
-    }
+  //  public int getSizeOfComments(){
+   //      sizeOfComments=comments.size() ;
+     //   return comments.size();
+   // }
 
     @Override
     public String toString() {
