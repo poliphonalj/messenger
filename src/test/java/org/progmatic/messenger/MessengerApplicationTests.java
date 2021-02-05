@@ -1,49 +1,50 @@
 package org.progmatic.messenger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.progmatic.messenger.controller.SearchAndListController;
+import org.progmatic.messenger.DTO.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(controllers = SearchAndListController.class)
-@AutoConfigureMockMvc(addFilters = false)
-@ComponentScan({"org.progmatic.messenger.service"})
+@SpringBootTest//integracios teszt
+@AutoConfigureMockMvc
+@ActiveProfiles("mytest_1")
 class MessengerApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @Test
-    @WithMockUser
-    public void testHomePage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/greeting"))
-                .andExpect(MockMvcResultMatchers.view().name("/home"));
+    @WithMockUser(username = "user")
+    void userShouldBeAbleToCreateMessageWitRest() throws Exception {
+        MessageDTO mr = new MessageDTO();
+        mr.setText("Helló");
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/rest/message")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mr)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        /*MvcResult mvcResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/rest/listmessages"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        List<MessageDTO> dtolist =
+                objectMapper.readValue(mvcResult.getResponse().getContentAsString(Charset.forName("UTF-8")),
+                        new TypeReference<List<MessageDTO>>() {
+                        });
+        Assertions.assertFalse(dtolist.isEmpty());*/
     }
 
-    @Test
-    @WithMockUser
-    public void testHomePage2() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/message/kilistaz")
-                .param("from", "user")
-                .param("text", "valami"))
-                .andExpect(
-                        MockMvcResultMatchers.view().name("MessageSearcherandList"));
-
-
-    }
 }
-

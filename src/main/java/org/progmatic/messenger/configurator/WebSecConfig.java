@@ -38,6 +38,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()    //mindenki johet ide=aki nem jelentkezett be az csak ezt az ablakot latja
                 .antMatchers("/error").permitAll()
                 .antMatchers("/rest/listmessages").permitAll()
+                .antMatchers("/rest/csrf").permitAll()
+                .antMatchers("/rest/message").permitAll()
                 .antMatchers("/messagesByUser").permitAll()
                 .anyRequest().authenticated();
     }

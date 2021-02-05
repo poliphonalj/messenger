@@ -38,7 +38,7 @@ public class Message {
     @GeneratedValue
     public long ID;
     @ManyToOne
-    @JsonIgnore
+    //@JsonIgnore
     private Topic topic;//toppic mapby -a
      int sizeOfComments;
 
@@ -51,7 +51,7 @@ public class Message {
     }
 
     @ManyToOne
-    @JsonIgnore
+    //@JsonIgnore
     private MyUser user;
 
 
